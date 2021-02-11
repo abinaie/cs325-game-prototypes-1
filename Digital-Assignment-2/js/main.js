@@ -40,9 +40,9 @@ var Breakout = new Phaser.Class({
     
         //  Create the bricks in a 10x6 grid
         this.bricks = this.physics.add.staticGroup({
-            key: 'assets', frame: [ 'red', 'purple1', 'silver1', 'red1','silver'],
-            frameQuantity: 10,
-            gridAlign: { width: 11, height:6, cellWidth: 64, cellHeight: 32, x: 150, y: 200 }
+            key: 'assets', frame: [ 'red', 'purple1' ,'red1','silver'],
+            frameQuantity: 6,
+            gridAlign: { width: 5, height:5, cellWidth: 64, cellHeight: 32, x: 270, y: 200 }
         });
 
         this.ball = this.physics.add.image(400, 500, 'assets', 'ball1').setCollideWorldBounds(true).setBounce(1);
@@ -82,10 +82,12 @@ var Breakout = new Phaser.Class({
 
     hitBrick: function (ball, brick)
     {
-        brick.disableBody(true, true);
+        if (!this.ball.getData('onPaddle')){//newly added
+        brick.disableBody(true, true);}
         //brick.enableBody(false, this.ball.x , this.ball.y , false , false);
         if (this.bricks.countActive() === 0)
         {
+            window.alert('Well Done!!!');
             this.resetLevel();
         }
     },
@@ -136,8 +138,9 @@ var Breakout = new Phaser.Class({
     {
         if (this.ball.y > 600 || this.ball.y < 0)
         {
-            //this.resetBall();
             this.resetLevel();
+            this.resetBall();//remove
+
         }
     }
 
@@ -145,7 +148,7 @@ var Breakout = new Phaser.Class({
 
 var config = {
     type: Phaser.AUTO,
-    width: 1000,
+    width: 800,
     height: 600,
     parent: 'game',
     scene: [ Breakout ],
@@ -155,106 +158,3 @@ var config = {
 };
 
 var game = new Phaser.Game(config);
-
-
-
-
-// class MyScene extends Phaser.Scene {
-    
-//     constructor() {
-//         super();
-//     }
-    
-//     preload() {
-//         // Load an image and call it 'logo'.
-//         this.load.image('touhou', './assets/phaser.png');
-
-//         this.load.setPath('./assets/audio');
-    
-//         this.load.audio('bass', [ 'bass.ogg', 'bass.mp3' ]);
-//         this.load.audio('drums', [ 'drums.ogg', 'drums.mp3' ]);
-//         this.load.audio('percussion', [ 'percussion.ogg', 'percussion.mp3' ]);
-//         this.load.audio('synth1', [ 'synth1.ogg', 'synth1.mp3' ]);
-//         this.load.audio('synth2', [ 'synth2.ogg', 'synth2.mp3' ]);
-//         this.load.audio('top1', [ 'top1.ogg', 'top1.mp3' ]);
-//         this.load.audio('top2', [ 'top2.ogg', 'top2.mp3' ]);        
-//     }
-    
-//     create() {
-//         this.add.image(790, 600, 'touhou').setOrigin(1);
-
-//         var bass = this.sound.add('bass');
-//         var drums = this.sound.add('drums');
-//         var percussion = this.sound.add('percussion');
-//         var synth1 = this.sound.add('synth1');
-//         var synth2 = this.sound.add('synth2');
-//         var top1 = this.sound.add('top1');
-//         var top2 = this.sound.add('top2');
-
-//         var keys = [
-//             'Press A for Bass',
-//             'Press B for Drums',
-//             'Press C for Percussion',
-//             'Press D for Synth1',
-//             'Press E for Synth2',
-//             'Press F for Top1',
-//             'Press G for Top2',
-//             '',
-//             'SPACE to stop all sounds'
-//         ];
-
-//         var text = this.add.text(10, 10, keys, { font: '32px Courier', fill: '#00ff00' });
-
-//         if (this.sound.locked)
-//         {
-//             text.setText('Click to start');
-
-//             this.sound.once('unlocked', function ()
-//             {
-//                 text.setText(keys);
-//             });
-//         }
-
-//         this.input.keyboard.on('keydown-SPACE', function () {
-//             this.sound.stopAll();
-//         }, this);
-
-//         this.input.keyboard.on('keydown-A', function () {
-//             bass.play();
-//         });
-
-//         this.input.keyboard.on('keydown-B', function () {
-//             drums.play();
-//         });
-
-//         this.input.keyboard.on('keydown-C', function () {
-//             percussion.play();
-//         });
-
-//         this.input.keyboard.on('keydown-D', function () {
-//             synth1.play();
-//         });
-
-//         this.input.keyboard.on('keydown-E', function () {
-//             synth2.play();
-//         });
-
-//         this.input.keyboard.on('keydown-F', function () {
-//             top1.play();
-//         });
-
-//         this.input.keyboard.on('keydown-G', function () {
-//             top2.play();
-//         });
-//     }
-        
-// }
-
-// const game = new Phaser.Game({
-//     type: Phaser.AUTO,
-//     parent: 'game',
-//     width: 800,
-//     height: 600,
-//     scene: MyScene,
-//     // physics: { default: 'arcade' },
-// });
