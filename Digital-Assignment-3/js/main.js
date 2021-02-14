@@ -51,30 +51,35 @@ var Flood = new Phaser.Class({
         this.grid = [];
         this.matched = [];
 
-        this.moves = 25;
+        this.moves = 30;//25
 
         this.frames = [ 'blue', 'green', 'grey', 'purple', 'red', 'yellow' ];
     },
 
     preload: function ()
     {
-        this.load.bitmapFont('atari', './assets/atari-smooth.png', './assets/atari-smooth.xml');
+        this.load.bitmapFont('atari', 'assets/atari-smooth.png', 'assets/atari-smooth.xml');
         this.load.atlas('flood', 'assets/blobs.png', 'assets/blobs.json');
+        this.load.atlas('fl', 'assets/monsters.png', 'assets/monsters.json');//newly added
+        this.load.image('bg', 'assets/np2.png');//newly added
     },
-
+//------------------------------------------------------------------------------
     create: function ()
     {
-        this.add.image(400, 300, 'flood', 'background');
-        this.gridBG = this.add.image(400, 600 + 300, 'flood', 'grid');
+        this.add.image(400, 300, 'bg', 'background');//newly added
+        //this.gridBG = this.add.image(400, 600 + 300, 'flood', 'grid');
+        
+        //this.add.image(16, 156, 'flood', 'cursor-over').setOrigin(0).setVisible(false);
 
         this.createIcon(this.icon1, 'grey', 16, 156);
         this.createIcon(this.icon2, 'red', 16, 312);
         this.createIcon(this.icon3, 'green', 16, 458);
         this.createIcon(this.icon4, 'yellow', 688, 156);
         this.createIcon(this.icon5, 'blue', 688, 312);
-        this.createIcon(this.icon6, 'purple', 688, 458);
+        this.createIcon(this.icon6, 'purple',688, 458);
 
         this.cursor = this.add.image(16, 156, 'flood', 'cursor-over').setOrigin(0).setVisible(false);
+        
 
         //  The game is played in a 14x14 grid with 6 different colors
 
@@ -122,15 +127,17 @@ var Flood = new Phaser.Class({
 
         this.createArrow();
 
-        this.text1 = this.add.bitmapText(684, 30, 'atari', 'Moves', 20).setAlpha(0);
-        this.text2 = this.add.bitmapText(694, 60, 'atari', '00', 40).setAlpha(0);
+        this.text1 = this.add.bitmapText(684, 30, 'atari', 'Moves', 20).setAlpha(0.5);//0
+        this.text2 = this.add.bitmapText(694, 60, 'atari', '00', 40).setAlpha(0.5);//0
         this.text3 = this.add.bitmapText(180, 200, 'atari', 'So close!\n\nClick to\ntry again', 48).setAlpha(0);
 
         this.instructions = this.add.image(400, 300, 'flood', 'instructions').setAlpha(0);
 
         this.revealGrid();
+        //console.log(this.grid[0][0].getData('color'));
+        window.alert("Can You Save Our National Park? Ranger!\n\n Fill the Park With Color Green with Less Than 30 Moves!\n\n Pick the Right Monster Assistant for Help!")
     },
-
+//------------------------------------------------------------------------------------
     helpFlood: function ()
     {
         for (var i = 0; i < 8; i++)
@@ -149,7 +156,7 @@ var Flood = new Phaser.Class({
             this.floodFill(oldColor, newColor, x, y)
         }
     },
-
+//------------------------------------------------------------------------------------
     createArrow: function ()
     {
         this.arrow = this.add.image(109 - 24, 48, 'flood', 'arrow-white').setOrigin(0).setAlpha(0);
@@ -165,12 +172,16 @@ var Flood = new Phaser.Class({
 
         });
     },
-
+//------------------------------------------------------------------------------------
     createIcon: function (icon, color, x, y)
     {
         var sx = (x < 400) ? -200 : 1000;
 
-        icon.monster = this.add.image(sx, y, 'flood', 'icon-' + color).setOrigin(0);
+        if(color === 'grey' || color === 'purple' || color === 'green' || color ==='yellow'){//newly added
+            icon.monster = this.add.image(sx, y, 'flood', 'icon-' + color).setOrigin(0);
+        }else {
+            icon.monster = this.add.image(sx, y, 'fl', color).setOrigin(0);//newly added
+        }
 
         var shadow = this.add.image(sx, y, 'flood', 'shadow');
 
@@ -186,7 +197,7 @@ var Flood = new Phaser.Class({
 
         icon.shadow = shadow;
     },
-
+//------------------------------------------------------------------------------------
     revealGrid: function ()
     {
         this.tweens.add({
@@ -281,8 +292,8 @@ var Flood = new Phaser.Class({
 
         var movesTween = this.tweens.addCounter({
             from: 0,
-            to: 25,
-            ease: 'Power1',
+            to: 30,//25
+            ease: 'Power3',
             onUpdate: function (tween, targets, text)
             {
                 text.setText(Phaser.Utils.String.Pad(tween.getValue().toFixed(), 2, '0', 1));
@@ -294,7 +305,7 @@ var Flood = new Phaser.Class({
         i += 500;
 
         this.tweens.add({
-            targets: [ this.instructions, this.arrow ],
+            targets: [  this.arrow ],//this.instructions, this.arrow
             alpha: 1,
             ease: 'Power3',
             delay: i
@@ -302,7 +313,7 @@ var Flood = new Phaser.Class({
 
         this.time.delayedCall(i, this.startInputEvents, [], this);
     },
-
+//------------------------------------------------------------------------------------
     startInputEvents: function ()
     {
         this.input.on('gameobjectover', this.onIconOver, this);
@@ -325,7 +336,7 @@ var Flood = new Phaser.Class({
 
         }, this);
     },
-
+//------------------------------------------------------------------------------------
     stopInputEvents: function ()
     {
         this.input.off('gameobjectover', this.onIconOver);
@@ -376,7 +387,7 @@ var Flood = new Phaser.Class({
             ease: 'Power2'
         });
     },
-
+//------------------------------------------------------------------------------------
     onIconOut: function (pointer, gameObject)
     {
         // console.log(this.monsterTween.targets[0].y);
@@ -395,7 +406,7 @@ var Flood = new Phaser.Class({
 
         this.arrow.setFrame('arrow-white');
     },
-
+//------------------------------------------------------------------------------------
     onIconDown: function (pointer, gameObject)
     {
         if (!this.allowClick)
@@ -443,7 +454,7 @@ var Flood = new Phaser.Class({
             }
         }
     },
-
+//------------------------------------------------------------------------------------
     createEmitter: function (color)
     {
         this.emitters[color] = this.particles.createEmitter({
@@ -457,7 +468,7 @@ var Flood = new Phaser.Class({
             on: false
         });
     },
-
+//------------------------------------------------------------------------------------
     startFlow: function ()
     {
         this.matched.sort(function (a, b) {
@@ -511,7 +522,7 @@ var Flood = new Phaser.Class({
 
         }, [], this);
     },
-
+//------------------------------------------------------------------------------------
     checkWon: function ()
     {
         var topLeft = this.grid[0][0].getData('color');
@@ -520,7 +531,7 @@ var Flood = new Phaser.Class({
         {
             for (var y = 0; y < 14; y++)
             {
-                if (this.grid[x][y].getData('color') !== topLeft)
+                if (this.grid[x][y].getData('color') !== 1) //1 is green //topLeft
                 {
                     return false;
                 }
@@ -529,7 +540,7 @@ var Flood = new Phaser.Class({
 
         return true;
     },
-
+//------------------------------------------------------------------------------------
     clearGrid: function ()
     {
         //  Hide everything :)
@@ -577,13 +588,14 @@ var Flood = new Phaser.Class({
 
         return i;
     },
-
+//------------------------------------------------------------------------------------
     gameLost: function ()
     {
         this.stopInputEvents();
 
-        this.text1.setText("Lost!");
-        this.text2.setText(':(');
+        //this.text1.setText("Lost!");
+        //this.text2.setText(':(');
+        //this.text1 = this.add.bitmapText(684, 30, 'atari', 'Moves', 20).setAlpha(0.5);//0
 
         var i = this.clearGrid();
 
@@ -592,14 +604,15 @@ var Flood = new Phaser.Class({
 
         this.tweens.add({
             targets: this.text3,
-            alpha: 1,
+            //alpha: 1,
+            alpha:0.5,
             duration: 1000,
             delay: i
         });
 
         this.input.once('pointerdown', this.resetGame, this);
     },
-
+//------------------------------------------------------------------------------------
     resetGame: function ()
     {
         this.text1.setText("Moves");
@@ -673,7 +686,7 @@ var Flood = new Phaser.Class({
 
         var movesTween = this.tweens.addCounter({
             from: 0,
-            to: 25,
+            to: 30,//25
             ease: 'Power1',
             onUpdate: function (tween, targets, text)
             {
@@ -683,11 +696,11 @@ var Flood = new Phaser.Class({
             delay: i
         });
 
-        this.moves = 25;
+        this.moves = 30;//25
 
         this.time.delayedCall(i, this.startInputEvents, [], this);
     },
-
+//------------------------------------------------------------------------------------
     gameWon: function ()
     {
         this.stopInputEvents();
@@ -712,9 +725,9 @@ var Flood = new Phaser.Class({
             delay: i
         });
 
-        this.time.delayedCall(2000, this.boom, [], this);
+        this.time.delayedCall(200, this.boom, [], this);
     },
-
+//------------------------------------------------------------------------------------
     boom: function ()
     {
         var color = Phaser.Math.RND.pick(this.frames);
@@ -727,7 +740,7 @@ var Flood = new Phaser.Class({
 
         this.time.delayedCall(100, this.boom, [], this);
     },
-
+//------------------------------------------------------------------------------------
     floodFill: function (oldColor, newColor, x, y)
     {
         if (oldColor === newColor || this.grid[x][y].getData('color') !== oldColor)
@@ -776,6 +789,7 @@ var config = {
 };
 
 var game = new Phaser.Game(config);
+
 
 
 
