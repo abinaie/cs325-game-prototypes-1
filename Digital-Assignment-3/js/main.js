@@ -135,7 +135,7 @@ var Flood = new Phaser.Class({
 
         this.revealGrid();
         //console.log(this.grid[0][0].getData('color'));
-        window.alert("Can You Save Our National Park? Ranger!\n\n Fill the Park With Color Green with Less Than 30 Moves!\n\n Pick the Right Monster Assistant for Help!")
+        window.alert("Can You Save Our National Park? Ranger!\n\n Fill the park with color Green in less than 30 moves!\n\n Pick the suitable Monster Assistant for Help!")
     },
 //------------------------------------------------------------------------------------
     helpFlood: function ()
