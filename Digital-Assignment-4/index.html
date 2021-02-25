@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Hello! Amaze!</title>
+<style>
+body
+{
+    color: #777;
+    font-family: "Avenir", Verdana, sans-serif;
+}
+#readme
+{
+    margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+<div id="game"></div>
+<div id="readme">
+<h2>Electron Bombardment!</h2>
+
+<ul>
+<li><strong>Originality:</strong>
+It is basically a Color Flood Game. It is a single player game. The player wins if they be able to fill our National Park with the color green under 30 moves. They are 6 monster assistant who they can get help from in their mission.
+</li>
+
+<li><strong>Technical Merit:</strong>
+It is challenging for one player to make the Park back to all green under 30 moves but it is doable.
+</li>
+
+<li><strong>Prototype Postmortem:</strong>
+I learned a little JavaScript as well as some Phaser game Logics and functions.
+The hardest part was still deciding the game design. Modifying the game and customizing features was the best part.
+</li>
+
+<li><strong>Prototype Assets:</strong>
+I used some of the assets of the original game and customized it to my liking.
+<ul>
+<li>Flood-Fill Game: <a href="https://github.com/photonstorm/phaser3-examples/tree/master/public/assets/games/flood">Save our National Park!</a></li>
+</ul>
+</li>
+
+<li><strong>Prototype Closest Other Game:</strong>
+I borrowed the idea and most of the code from Flood-Fill game which is one of Phaser 3 examples.
+</li>
+
+<li><strong>High Concept:</strong>
+The game's goal is to restore damaged ecosystems by planting trees on land where forests have been cut down and encourage people to live in a way that doesn't hurt the environment. 
+</li>
+
+<li><strong>Theme:</strong>
+National park service ranger.
+</li>
+
+<li><strong>Mandated Variety:</strong>
+Input : Mouse as well as Keyboard (Key M to increase number of moves!-- Randomness: The filed you start with is random bit the outcome of your decisions are not random! -- Genre : Puzzle. 
+The play style I used in this prototype is the Achiever style.
+</li>
+
+<li><strong>Prototype Goal:</strong>
+This prototype is used to evaluate semantics of the game and the software programming skills of the developer. 
+</li>
+
+<li><strong>Player Experience Goals:</strong>
+So the player enjoy this game as well as to encourage people to live in a way that doesn't hurt the environment.
+</li>
+
+<li><strong>Game play:</strong>
+This is a single player game. The player has 30 moves to turn the gird color to the color green. It is ok that before the 30th move the filed have a different color than green but by the 30 move the whole filed should turn into green. The player could chose a monsters with different colors to help them accomplish their mission.
+</li>
+
+<li><strong>Strategies:</strong>
+The best strategy is to pick the color that turn more boxes into similar color and finally green.
+</li>
+
+<li><strong>Story/Setting/Premise:</strong>
+There is actually no moving parts in this design. Also nothing is added and nothing is removed from the scene. There is only one control, and only one thing you spend time doing in this game, and that is choosing the right color and clicking on it.    
+Without jungles and trees, our planet is unable to mitigate excess greenhouse gas emissions, which destabilizes the Earth's climate that could be very dangerous. This game hopefully is a little reminder of this danger and what we could do to prevent it.
+</li>
+
+<li><strong>Target Audience:</strong>
+Everyone who needs a reminder about the importance of the environment and how they can help save the planet. Anyone from 3 to 120 could play and hopefully enjoy it.
+</li>
+
+<li><strong>Play Time:</strong>
+It takes a bit of time to get used to it at first, but it gets a 3 mins game very soon.
+</li>
+
+</ul>
+</div>
+
+<!-- main.js must come at the end since it expects the HTML to have been created. -->
+<script src="js/main.js" type="module"></script>
+</body>
+</html>
