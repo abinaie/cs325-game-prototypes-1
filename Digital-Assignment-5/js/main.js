@@ -38,6 +38,7 @@ var game = new Phaser.Game(config);
 
 function preload ()
 {
+    window.alert( "Control:\nLeft:     ->\nRight:   <-\nDown:   Up Arrow\nUp:   Down Arrow!")
     this.load.image('food', 'assets/food.png');
     this.load.image('body', 'assets/body.png');
 }
