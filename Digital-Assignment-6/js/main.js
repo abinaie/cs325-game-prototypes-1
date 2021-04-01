@@ -16,7 +16,7 @@ var config = {
     type: Phaser.AUTO,
     parent: 'game',
     width: 1024,
-    height: 1024,
+    height: 1152,
     physics: {
         default: 'arcade',
         arcade: {
@@ -37,15 +37,21 @@ let text;
 var cursors;
 var gameOver = false;
 
-
 var game = new Phaser.Game(config);
 
 function preload () {
     this.load.image("tiles", "assets/maze_tiles.png");
     this.load.image("finish","assets/trophy.png");
     this.load.tilemapTiledJSON("map", "assets/snakes.json");
-    this.load.spritesheet('dude', 'assets/little_man.png', { frameWidth: 31.5, frameHeight: 48 });
+    this.load.spritesheet('dude', 'assets/robot.png', { frameWidth: 31.5, frameHeight: 48 });
     this.load.audio('bgm', 'assets/bgmusic.wav');
+
+    this.load.image("d1","assets/dice1.png");
+    this.load.image("d2","assets/dice2.png");
+    this.load.image("d3","assets/dice3.png");
+    this.load.image("d4","assets/dice4.png");
+    this.load.image("d5","assets/dice5.png");
+    this.load.image("d6","assets/dice6.png");
 }
 
 function create () {
@@ -64,14 +70,23 @@ function create () {
 
     worldLayer = map.createStaticLayer("level1", tileset, 0, 0);
 
-    //set collision on map
+    //add collision on map
     worldLayer.setCollisionByProperty({ collides: true });
 
     //add the player
-    player = this.physics.add.sprite(125, 125, 'dude');
+    player = this.physics.add.sprite(125, 900, 'dude');
+
+    //add trophy
+    trophy = this.physics.add.group({
+        key: 'finish',
+        setXY: { x: 125, y: 125 }
+    })
 
     //reset button
     this.reset = this.input.keyboard.addKey('SPACE');
+
+    //roll button
+    this.roll = this.input.keyboard.addKey('R');
 
     //player physics properties
     player.setCollideWorldBounds(true);
@@ -115,26 +130,24 @@ function create () {
 
     //cursor input Events
     cursors = this.input.keyboard.createCursorKeys();
-    
-    //add waterbottle
-    trophy = this.physics.add.group({
-        key: 'finish',
-        setXY: { x: 125, y: 900 }
-    })
 
-    //collide the player with map walls
+    //collide the player with board boundry
     this.physics.add.collider(player, worldLayer);
 
 
-    //checks to see if the player overlaps with the water bottle
+    //checks to see if the player overlaps with the trophy
     this.physics.add.overlap(player, trophy, collectTrophy, null, this);
+
+    this.add.image(250, 1050, "d1");  
+    this.add.text(350, 1035, 'press R to roll', { fontSize: '32px', fill: '#000' });
+
 }
 
 function update ()
 {
     if (gameOver)
     {
-        let style = { font: "30px Droid Sans", fill: "#3391CF", outline: "5px",align: "center" };
+        let style = { font: "32px Verdana", fill: "#000000", outline: "5px",align: "center" };
             text = this.add.text( this.cameras.main.centerX, this.cameras.main.centerY, "YOU WON!\nPress SPACE to restart game", style );
             text.setOrigin( 0.5, 2.4 ); 
     }
@@ -143,6 +156,29 @@ function update ()
         this.scene.restart();
         this.music.stop();
         gameOver = false;
+    }
+
+    if (this.roll.isDown) {
+        var rng  = Phaser.Math.RND.between(1, 6);
+        
+        if(rng == 1) {
+            this.add.image(250, 1050, "d1");
+        }
+        else if (rng == 2) {
+            this.add.image(250, 1050, "d2"); 
+        }
+        else if (rng == 3) {
+            this.add.image(250, 1050, "d3"); 
+        }
+        else if (rng == 4) {
+            this.add.image(250, 1050, "d4"); 
+        }
+        else if (rng == 5) {
+            this.add.image(250, 1050, "d5"); 
+        }
+        else {
+            this.add.image(250, 1050, "d6"); 
+        }
     }
     
     player.body.setVelocity(0);
@@ -177,9 +213,9 @@ function update ()
     }
 }
 
-function collectTrophy (players, bottle)
+function collectTrophy (players, finish)
 {
-    bottle.disableBody(true, true);
+    finish.disableBody(true, true);
 
     if (trophy.countActive(true) === 0)
     {
@@ -188,7 +224,3 @@ function collectTrophy (players, bottle)
         gameOver = true;
     }
 }
-
-
-    
-
